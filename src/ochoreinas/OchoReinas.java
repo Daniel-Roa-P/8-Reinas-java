@@ -3,11 +3,15 @@ package ochoreinas;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
@@ -22,6 +26,8 @@ public class OchoReinas extends JFrame implements ActionListener{
     ArrayList reinas = new ArrayList();
     ArrayList posX = new ArrayList();
     ArrayList posY = new ArrayList();
+    
+    JLabel [][] cuadros = new JLabel[8][8]; 
     
     public static void main(String[] args) {
         
@@ -47,7 +53,7 @@ public class OchoReinas extends JFrame implements ActionListener{
         botonCombinar.setBounds(100,20,500,30);
         botonCombinar.setBackground(Color.ORANGE);
     
-        tablero.setBounds(100, 100, 500, 500);
+        tablero.setBounds(70, 70, 560, 560);
         tablero.setBackground(Color.WHITE);
         
     }
@@ -168,6 +174,45 @@ public class OchoReinas extends JFrame implements ActionListener{
         
         if(e.getSource() == botonCombinar){
         
+            
+            ImageIcon cafeClaro = new ImageIcon(getClass().getResource("claro.png"));
+            ImageIcon cafeOscuro = new ImageIcon(getClass().getResource("oscuro.png"));
+            ImageIcon reina = new ImageIcon(getClass().getResource("reina.jpg"));
+
+            Icon iconoEscalado;
+            Image imgEscalada;
+            
+            for(int i = 0; i<8; i++){
+            
+                for(int j = 0; j<8; j++){
+                
+                    cuadros[i][j] = new JLabel();
+                    
+                    if( (i + j)%2 == 0 ){
+                    
+                        imgEscalada = cafeClaro.getImage().getScaledInstance(70,70, Image.SCALE_SMOOTH);
+                        iconoEscalado = new ImageIcon(imgEscalada);
+                        
+                        
+                    } else {
+                        
+                        imgEscalada = cafeOscuro.getImage().getScaledInstance(70,70, Image.SCALE_SMOOTH);
+                        iconoEscalado = new ImageIcon(imgEscalada);
+                        
+                        
+                    }
+                    
+                    cuadros[i][j].setBounds(70*j , 70*i, 70, 70);
+                    cuadros[i][j].setIcon(iconoEscalado);
+                    
+                    tablero.add(cuadros[i][j]);
+                    
+                }
+                
+            }
+            
+            tablero.repaint();
+            
             for(int i = 0; i<8; i++){
             
                 reinas.add("R");
@@ -176,21 +221,15 @@ public class OchoReinas extends JFrame implements ActionListener{
                 
                     matriz[i][j]="0";
                     
-                    System.out.print(matriz[i][j] + ", ");
-                    
                 }
-                
-                System.out.println(" ");
-                
+
             }
             
             int x = 0, y = 0;
             
-            while(reinas.size() != 0){
+            while(!reinas.isEmpty()){
                 
                 if( y < 8 && matriz[x][y].equals("0") ){
-                
-                    System.out.println(" ");
                     
                     matriz[x][y] = "R";
                     
@@ -203,21 +242,16 @@ public class OchoReinas extends JFrame implements ActionListener{
                     setHorizontales("1", x, y);
                     setDiagonales("1", x, y);
                     
+                    imgEscalada = reina.getImage().getScaledInstance(70,70, Image.SCALE_SMOOTH);
+                    iconoEscalado = new ImageIcon(imgEscalada);
+                    cuadros[x][y].setBounds(70*y , 70*x, 70, 70);
+                    cuadros[x][y].setIcon(iconoEscalado);
+                    
+                    tablero.add(cuadros[x][y]);
+                    
                     x++;
                     y = 0;
-                    
-                    for(int i = 0; i<8; i++){
-
-                        for(int j=0; j<8; j++){
-
-                            System.out.print(matriz[i][j] + ", ");
-
-                        }
-
-                        System.out.println(" ");
-
-                    }
-                    
+                                        
                 } else {
                     
                     y++;
@@ -225,8 +259,6 @@ public class OchoReinas extends JFrame implements ActionListener{
                 }
                      
                 if(y >= 8){
-                
-                    System.out.println(" ");
                     
                     x = (int) posX.get(posX.size() - 1);
                     y = (int) posY.get(posY.size() - 1);
@@ -238,41 +270,35 @@ public class OchoReinas extends JFrame implements ActionListener{
                     
                     matriz[x][y] = "0";
                     
+                    if( (x + y)%2 == 0 ){
+                    
+                        imgEscalada = cafeClaro.getImage().getScaledInstance(70,70, Image.SCALE_SMOOTH);
+                        iconoEscalado = new ImageIcon(imgEscalada);
+                        
+                    } else {
+                        
+                        imgEscalada = cafeOscuro.getImage().getScaledInstance(70,70, Image.SCALE_SMOOTH);
+                        iconoEscalado = new ImageIcon(imgEscalada);
+                        
+                        
+                    }
+                    
+                    cuadros[x][y].setBounds(70*y , 70*x, 70, 70);
+                    cuadros[x][y].setIcon(iconoEscalado);
+                    
+                    tablero.add(cuadros[x][y]);
+                    
                     setVerticales("-1", x, y);
                     setHorizontales("-1", x, y);
                     setDiagonales("-1", x, y);
                     
                     y++;
                 
-                    for(int i = 0; i<8; i++){
-
-                        for(int j=0; j<8; j++){
-
-                            System.out.print(matriz[i][j] + ", ");
-
-                        }
-
-                        System.out.println(" ");
-
-                    }
-                    
                 }
                 
             }
             
-//            System.out.println(" ");
-//                
-//            for(int i = 0; i<8; i++){
-//
-//                for(int j=0; j<8; j++){
-//
-//                    System.out.print(matriz[i][j] + ", ");
-//
-//                }
-//
-//                System.out.println(" ");
-//
-//            }
+            tablero.repaint();
             
         }
         
