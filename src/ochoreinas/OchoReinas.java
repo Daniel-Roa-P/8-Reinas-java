@@ -3,10 +3,16 @@ package ochoreinas;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -29,7 +35,7 @@ public class OchoReinas extends JFrame implements ActionListener{
     
     JLabel [][] cuadros = new JLabel[8][8]; 
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException  {
         
         OchoReinas reinas = new OchoReinas();
         reinas.setSize(700, 700);
@@ -173,7 +179,8 @@ public class OchoReinas extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         
         if(e.getSource() == botonCombinar){
-        
+            
+            tablero.removeAll();
             
             ImageIcon cafeClaro = new ImageIcon(getClass().getResource("claro.png"));
             ImageIcon cafeOscuro = new ImageIcon(getClass().getResource("oscuro.png"));
@@ -213,6 +220,8 @@ public class OchoReinas extends JFrame implements ActionListener{
             
             tablero.repaint();
             
+            
+
             for(int i = 0; i<8; i++){
             
                 reinas.add("R");
@@ -226,7 +235,7 @@ public class OchoReinas extends JFrame implements ActionListener{
             }
             
             int x = 0, y = 0;
-            
+
             while(!reinas.isEmpty()){
                 
                 if( y < 8 && matriz[x][y].equals("0") ){
@@ -247,7 +256,15 @@ public class OchoReinas extends JFrame implements ActionListener{
                     cuadros[x][y].setBounds(70*y , 70*x, 70, 70);
                     cuadros[x][y].setIcon(iconoEscalado);
                     
-                    tablero.add(cuadros[x][y]);
+                    tablero.add(cuadros[x][y]);  
+                    
+                    tablero.paintImmediately(0,0,560,560);   
+                    
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(OchoReinas.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     
                     x++;
                     y = 0;
@@ -283,10 +300,17 @@ public class OchoReinas extends JFrame implements ActionListener{
                         
                     }
                     
-                    cuadros[x][y].setBounds(70*y , 70*x, 70, 70);
+                    cuadros[x][y].setBounds(70*y , 70*x , 70, 70);
                     cuadros[x][y].setIcon(iconoEscalado);
                     
                     tablero.add(cuadros[x][y]);
+                    tablero.paintImmediately(0,0,560,560); 
+                    
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(OchoReinas.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     
                     setVerticales("-1", x, y);
                     setHorizontales("-1", x, y);
@@ -297,7 +321,7 @@ public class OchoReinas extends JFrame implements ActionListener{
                 }
                 
             }
-            
+ 
             tablero.repaint();
             
         }
