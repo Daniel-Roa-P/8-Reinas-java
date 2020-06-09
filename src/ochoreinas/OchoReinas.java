@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 public class OchoReinas extends JFrame implements ActionListener{
@@ -34,6 +35,9 @@ public class OchoReinas extends JFrame implements ActionListener{
     ArrayList posY = new ArrayList();
     
     JLabel [][] cuadros = new JLabel[8][8]; 
+    JLabel texto = new JLabel("Ingrese la columna donde desea ubicar la primera reina en la primera fila (0 - 7) : ");
+    
+    JTextField valor = new JTextField("0");
     
     public static void main(String[] args) throws InterruptedException  {
         
@@ -54,9 +58,14 @@ public class OchoReinas extends JFrame implements ActionListener{
         
         c.add(botonCombinar);
         c.add(tablero);
+        c.add(texto);
+        c.add(valor);
+        
+        texto.setBounds(100, 5, 500, 20);
+        valor.setBounds(560, 5, 40, 20);
         
         botonCombinar.addActionListener(this);
-        botonCombinar.setBounds(100,20,500,30);
+        botonCombinar.setBounds(100,30,500,30);
         botonCombinar.setBackground(Color.ORANGE);
     
         tablero.setBounds(70, 70, 560, 560);
@@ -178,7 +187,7 @@ public class OchoReinas extends JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         
-        if(e.getSource() == botonCombinar){
+        if(e.getSource() == botonCombinar && Integer.parseInt(valor.getText()) > -1 && Integer.parseInt(valor.getText()) < 8){
             
             tablero.removeAll();
             
@@ -234,8 +243,10 @@ public class OchoReinas extends JFrame implements ActionListener{
 
             }
             
-            int x = 0, y = 0;
+            int x = 0;
 
+            int y = Integer.parseInt(valor.getText());
+            
             while(!reinas.isEmpty()){
                 
                 if( y < 8 && matriz[x][y].equals("0") ){
